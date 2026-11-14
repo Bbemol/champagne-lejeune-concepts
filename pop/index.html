@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pop Lejeune · formats</title>
+<meta name="description" content="Déclinaison « Pop » de Champagne Lejeune : une même grille pour le carré, la story et l'affiche.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bleu: #2340A0; --bleu-nuit: #18307E; --gris: #E4E4E0; --gris-clair: #EFEFEC; --or: #C9A65A; --encre: #14204F;
+    --font: 'Bricolage Grotesque', system-ui, sans-serif;
+    --ease: cubic-bezier(.22, 1, .36, 1);
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--gris); color: var(--bleu); -webkit-text-size-adjust: 100%; }
+  body { margin: 0; font: 400 17px/1.5 var(--font); font-variation-settings: 'wdth' 100; }
+  ::selection { background: var(--bleu); color: var(--gris); }
+  :focus-visible { outline: 3px solid var(--or); outline-offset: 3px; }
+  a { color: inherit; text-underline-offset: .2em; text-decoration-thickness: 1px; }
+
+  .page { max-width: 1240px; margin: 0 auto; padding: clamp(28px, 5vw, 64px) 16px 40px; }
+  .head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 360px); gap: 24px 48px; align-items: end; margin-bottom: clamp(40px, 6vw, 80px); }
+  .head h1 {
+    margin: 0; font-weight: 800; font-variation-settings: 'wdth' 75, 'opsz' 96; text-transform: uppercase;
+    font-size: clamp(64px, 14vw, 188px); line-height: .8; letter-spacing: -.02em; color: var(--bleu);
+  }
+  .head h1 span { color: var(--or); }
+  .head p { margin: 0; max-width: 36ch; color: var(--encre); }
+  .head p + p { margin-top: 10px; font-size: 14px; color: #3A4A82; }
+
+  .use { padding: 28px 0 40px; border-top: 2px solid var(--bleu); }
+  .use-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 24px; margin-bottom: 22px; }
+  .use h2 { margin: 0; font-weight: 750; font-variation-settings: 'wdth' 80; text-transform: uppercase; font-size: clamp(28px, 3.4vw, 42px); line-height: 1; letter-spacing: -.01em; }
+  .use-note { margin: 0; font-size: 14px; color: #3A4A82; max-width: 60ch; }
+
+  .formats { display: flex; align-items: flex-end; gap: clamp(16px, 2.6vw, 36px); }
+  figure { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  figcaption { font-size: 13px; color: #3A4A82; font-variant-numeric: tabular-nums; display: flex; justify-content: space-between; gap: 12px; }
+  figcaption b { font-weight: 600; color: var(--bleu); }
+  .f-carre { width: clamp(220px, 27vw, 340px); }
+  .f-story { width: clamp(150px, 17vw, 214px); }
+  .f-affiche { width: clamp(200px, 23vw, 286px); }
+
+  /* ---------- L'affiche : une seule grille, en unités du conteneur ---------- */
+  .poster {
+    --fond: var(--gris); --mot: var(--bleu); --texte: var(--encre); --accent: var(--or);
+    position: relative; overflow: hidden; container-type: size; background: var(--fond); color: var(--texte);
+    box-shadow: 0 1px 0 rgba(20, 32, 79, .08), 0 18px 40px -18px rgba(20, 32, 79, .35);
+  }
+  .poster.bleu { --fond: var(--bleu); --mot: var(--gris); --texte: var(--gris); }
+  .f-carre .poster { aspect-ratio: 1 / 1; }
+  .f-story .poster { aspect-ratio: 9 / 16; }
+  .f-affiche .poster { aspect-ratio: 1 / 1.414; }
+
+  .p-logo {
+    position: absolute; z-index: 3; top: 5cqw; left: 6cqw; font-weight: 700; font-variation-settings: 'wdth' 85;
+    font-size: 5.2cqw; letter-spacing: -.01em; line-height: 1;
+  }
+  .p-logo small { display: block; font-weight: 400; font-variation-settings: 'wdth' 100; font-size: 2.6cqw; margin-top: .6cqw; opacity: .8; }
+  .p-mot {
+    position: absolute; z-index: 1; left: -1.5cqw; right: -1.5cqw; top: 21cqh; margin: 0;
+    font-weight: 800; font-variation-settings: 'wdth' 75, 'opsz' 96; text-transform: uppercase; color: var(--mot);
+    font-size: var(--taille, 30cqw); line-height: .8; letter-spacing: -.025em; text-align: center; white-space: nowrap;
+  }
+  .p-mot .or { color: var(--accent); }
+  .p-objet {
+    position: absolute; z-index: 2; left: 50%; bottom: var(--bas, 18cqh); height: var(--haut, 64cqh); transform: translateX(-50%);
+    filter: drop-shadow(0 2.4cqw 2.4cqw rgba(10, 18, 50, .28));
+  }
+  .p-objet img { display: block; height: 100%; width: auto; }
+  .p-photo { --haut: 44cqh; aspect-ratio: 3 / 4; overflow: hidden; border: 1.2cqw solid var(--fond); }
+  .p-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .p-info {
+    position: absolute; z-index: 3; left: 6cqw; right: 6cqw; bottom: 4.4cqw; display: flex; flex-direction: column; gap: 1cqw;
+    font-size: 2.9cqw; line-height: 1.25;
+  }
+  .p-info b { font-weight: 700; font-size: 3.6cqw; letter-spacing: -.005em; }
+  .p-evin { font-size: 1.9cqw; opacity: .78; }
+  .p-pastille {
+    position: absolute; z-index: 3; right: 6cqw; top: 5cqw; width: 15cqw; aspect-ratio: 1; border-radius: 50%;
+    display: grid; place-items: center; text-align: center; background: var(--accent); color: var(--encre);
+    font-weight: 750; font-variation-settings: 'wdth' 80; font-size: 2.9cqw; line-height: 1; text-transform: uppercase;
+  }
+  /* Story : le mot passe sur deux lignes et descend, l'objet grandit. */
+  .f-story .p-mot { top: 15cqh; --taille: 30cqw; white-space: normal; line-height: .82; }
+  .f-story .p-objet { --haut: 58cqh; --bas: 16cqh; }
+  .f-story .p-info { font-size: 4cqw; } .f-story .p-info b { font-size: 5cqw; } .f-story .p-evin { font-size: 2.8cqw; }
+  .f-story .p-logo { font-size: 7.4cqw; } .f-story .p-logo small { font-size: 3.6cqw; }
+  .f-story .p-pastille { width: 20cqw; font-size: 3.8cqw; }
+  .f-story .p-objet.p-photo { --haut: 38cqh; --bas: 19cqh; }
+  .f-affiche .p-objet.p-photo { --haut: 42cqh; --bas: 17cqh; }
+  .f-affiche .p-mot { top: 19cqh; }
+  .f-affiche .p-objet { --haut: 64cqh; --bas: 14cqh; }
+
+  .note { margin-top: 48px; padding-top: 20px; border-top: 2px solid var(--bleu); font-size: 14px; color: #3A4A82; display: grid; gap: 6px; }
+  .note p { margin: 0; max-width: 80ch; }
+
+  @media (max-width: 860px) {
+    .head { grid-template-columns: 1fr; }
+    .formats { overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; margin: 0 -16px; padding-inline: 16px; scroll-padding-inline: 16px; scrollbar-color: var(--bleu) transparent; }
+    figure { scroll-snap-align: start; flex: none; }
+    .f-carre { width: 240px; } .f-story { width: 170px; } .f-affiche { width: 220px; }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+  <header class="head">
+    <h1>Pop<br>Lejeune<span>.</span></h1>
+    <div>
+      <p>Le registre des campagnes : médaille, saison de la René Louis, appel aux vendangeurs, fêtes. Une même grille pour le carré, la story et l'affiche ; seuls le mot et l'objet changent.</p>
+      <p>Il se branche sur le concept retenu, naturellement sur le 4 et le 5. Pas d'illustration ici : le Pop reste typographique et photographique.</p>
+    </div>
+  </header>
+  <div id="uses"></div>
+  <footer class="note">
+    <p>Chaque format porte la mention « L'abus d'alcool est dangereux pour la santé. À consommer avec modération. » Les textes s'en tiennent aux faits (origine, distinction, saison, adresse), dans l'esprit de la loi Évin.</p>
+    <p>La René Louis et ses dates de vente viennent du site actuel, à confirmer. Elle n'a pas encore de détourage : sa photo tient lieu de bouteille.</p>
+  </footer>
+</main>
+
+<script src="../shared/data.js"></script>
+<script>
+  'use strict';
+  const L = window.LEJEUNE;
+  const C = Object.fromEntries(L.CUVEES.map((c) => [c.id, c]));
+  const evin = L.CONTACT.evin;
+
+  const USES = [
+    { id: 'medaille', titre: "Médaille d'Or", note: 'La distinction du Brut Grande Réserve, mars 2026.',
+      fond: 'gris', mot: 'Médaille<br><span class="or">d’or</span>', mot1: 'Médaille <span class="or">d’or</span>', taille: '20.5cqw',
+      objet: { bouteille: C['grande-reserve'].bouteille, alt: 'Bouteille de Brut Grande Réserve' },
+      pastille: 'Paris<br>2026',
+      info: ['Brut Grande Réserve', "Médaille d'Or, Concours Général Agricole de Paris 2026"] },
+    { id: 'rene-louis', titre: 'Saison René Louis', note: 'Vendue d’octobre à décembre (à confirmer).',
+      fond: 'bleu', mot: 'René<br>Louis', taille: '27cqw', mot1: 'René Louis',
+      objet: { photo: L.RENE_LOUIS.photo, alt: 'Bouteille de René Louis en extérieur' },
+      info: ["D'octobre à décembre", 'Chardonnay et Pinot Noir à parts égales, en hommage à René Lejeune et Louis Billiot'] },
+    { id: 'vendangeurs', titre: 'Appel aux vendangeurs', note: 'Le recrutement de l’équipe de vendange.',
+      fond: 'gris', mot: 'Vendan<br>geurs', mot1: 'Vendangeurs', taille: '20cqw',
+      objet: { photo: L.photo('vendanges-vendangeuse-coupe-grappe'), alt: 'Une vendangeuse coupe une grappe de chardonnay' },
+      info: ['Nous recrutons pour les vendanges', 'Coupeurs, porteurs, cuisiniers · Villers-Marmery, Verzy, Ambonnay'] },
+    { id: 'fetes', titre: 'Les fêtes', note: 'Commander au domaine pour la fin d’année.',
+      fond: 'bleu', mot: 'Les<br>fêtes', mot1: 'Les fêtes', taille: '28cqw',
+      objet: { bouteille: C['brut-reserve'].bouteille, alt: 'Bouteille de Brut Réserve' },
+      info: ['Commandez au domaine', L.CONTACT.adresse.join(', ')] }
+  ];
+  const FORMATS = [['carre', 'Carré', '1080 × 1080'], ['story', 'Story', '1080 × 1920'], ['affiche', 'Affiche', 'A2, 420 × 594']];
+
+  const poster = (u, f) => {
+    const mot = f === 'story' ? u.mot : (u.mot1 || u.mot);
+    const objet = u.objet.bouteille
+      ? `<div class="p-objet"><img src="${u.objet.bouteille}" alt="${u.objet.alt}" decoding="async"></div>`
+      : `<div class="p-objet p-photo"><img src="${u.objet.photo}" alt="${u.objet.alt}" decoding="async"></div>`;
+    return `
+      <div class="poster ${u.fond === 'bleu' ? 'bleu' : ''}" role="img" aria-label="${u.titre}, format ${f}">
+        <div class="p-logo" aria-hidden="true">Lejeune<small>Père &amp; Fils · Villers-Marmery</small></div>
+        ${u.pastille ? `<div class="p-pastille" aria-hidden="true">${u.pastille}</div>` : ''}
+        <p class="p-mot" style="--taille:${f === 'story' ? '30cqw' : u.taille}" aria-hidden="true">${mot}</p>
+        ${objet}
+        <div class="p-info" aria-hidden="true"><b>${u.info[0]}</b><span>${u.info[1]}</span><span class="p-evin">${evin}</span></div>
+      </div>`;
+  };
+
+  document.getElementById('uses').innerHTML = USES.map((u) => `
+    <section class="use" id="${u.id}" aria-labelledby="h-${u.id}">
+      <div class="use-head"><h2 id="h-${u.id}">${u.titre}</h2><p class="use-note">${u.note}</p></div>
+      <div class="formats">
+        ${FORMATS.map(([f, nom, dim]) => `
+          <figure class="f-${f}">${poster(u, f)}<figcaption><b>${nom}</b><span>${dim}</span></figcaption></figure>`).join('')}
+      </div>
+    </section>`).join('');
+</script>
+</body>
+</html>

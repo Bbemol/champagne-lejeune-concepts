@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr" data-declinaison="base">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Le Nuancier · Champagne Lejeune Père &amp; Fils</title>
+<meta name="description" content="Champagne Lejeune Père & Fils, propriétaires-récoltants à Villers-Marmery depuis 1684 : toute la maison et ses cuvées, une couleur par cuvée.">
+<meta name="theme-color" content="#ECEAE3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&amp;family=Work+Sans:wght@400;500;600&amp;family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&amp;display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<main class="nuancier" id="nuancier" aria-label="Champagne Lejeune Père &amp; Fils, la maison et ses cuvées"></main>
+
+<button type="button" class="lines-hit" id="lines-hit" data-action="overview" aria-label="Revenir au nuancier">
+  <span>Tout le nuancier</span>
+  <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 10.5 8 5.5l5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<p class="evin-fixed" id="evin-fixed"></p>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/declinaison.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

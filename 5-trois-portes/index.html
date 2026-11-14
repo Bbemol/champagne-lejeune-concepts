@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr" data-declinaison="base">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Champagne Lejeune Père & Fils · Les Trois Portes</title>
+<meta name="description" content="Champagne Lejeune Père & Fils, propriétaires-récoltants à Villers-Marmery depuis 1684. Choisissez une porte : la vigne, la cave, la maison.">
+<meta name="theme-color" content="#1F3A8F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,300..700;1,8..60,300..700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a class="skip" href="#lecture">Aller au contenu</a>
+
+<div class="page" id="page">
+  <header class="top" id="top">
+    <nav class="picto" id="picto" aria-label="Où vous êtes"></nav>
+    <a class="brand" href="#/" aria-label="Champagne Lejeune Père & Fils, accueil">
+      <span class="brand-name">Champagne Lejeune</span><span class="brand-sep" aria-hidden="true">·</span><span class="brand-pf">Père &amp; Fils</span>
+    </a>
+    <ol class="crumbs" id="crumbs" aria-label="Fil d'Ariane"></ol>
+    <div class="lang" role="group" aria-label="Langue">
+      <button type="button" class="lang-b" data-lang="fr" aria-pressed="true">FR</button>
+      <span aria-hidden="true">/</span>
+      <button type="button" class="lang-b" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="stage" id="stage" aria-label="Les portes">
+      <div class="stage-band" aria-hidden="true"></div>
+      <div class="stage-inner" id="stage-inner"></div>
+    </section>
+
+    <div class="lecture" id="lecture" tabindex="-1"></div>
+  </main>
+
+  <footer class="pied" id="pied"></footer>
+</div>
+
+<a class="venir-door" id="venir-door" href="#/venir" aria-label="Venir : commander, visiter et déguster, vendanger avec nous">
+  <span class="venir-media" aria-hidden="true"></span>
+  <span class="venir-word">Venir</span>
+  <span class="venir-sub">Commander · Visiter · Vendanger</span>
+  <svg class="venir-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+</a>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/declinaison.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

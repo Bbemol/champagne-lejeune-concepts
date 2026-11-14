@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Champagne Lejeune · Le Plan-séquence</title>
+<meta name="description" content="Champagne Lejeune Père & Fils, propriétaires-récoltants à Villers-Marmery depuis 1684 : une journée au domaine, en un seul plan-séquence.">
+<meta name="theme-color" content="#14110E">
+<script>document.documentElement.classList.add('js');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a class="skip" href="#generique">Aller au rendez-vous</a>
+
+<header class="top" id="top">
+  <a class="logo" href="#aube" aria-label="Lejeune, revenir au début du film">Lejeune</a>
+  <div class="top-right">
+    <div class="lang" role="group" aria-label="Langue">
+      <button type="button" class="lang-b" data-lang="fr" aria-pressed="true">FR</button>
+      <button type="button" class="lang-b" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <a class="visit" href="#rendez-vous"><span class="visit-long">Nous rendre visite</span><span class="visit-short">Nous voir</span></a>
+  </div>
+  <p class="toast" id="toast" role="status" hidden></p>
+</header>
+
+<main>
+  <div class="film" id="film">
+    <div class="stage" id="stage">
+      <div class="band band-top" aria-hidden="true"></div>
+      <div class="pic" id="pic"></div>
+      <div class="band band-sub" id="subs"></div>
+      <div class="fiche" id="fiche" role="dialog" aria-modal="false" aria-labelledby="fz-name" hidden></div>
+    </div>
+  </div>
+
+  <section class="generique" id="generique" aria-labelledby="gen-title"></section>
+</main>
+
+<nav class="frise" id="frise" aria-label="Frise de montage"></nav>
+<div class="mbar" id="mbar"></div>
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Séquences du film" hidden></div>
+
+<noscript><p class="noscript">Ce site se regarde comme un film : il a besoin de JavaScript.</p></noscript>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/declinaison.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

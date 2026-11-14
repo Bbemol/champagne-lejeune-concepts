@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr" data-declinaison="base">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lejeune, carnet du domaine</title>
+<meta name="description" content="Champagne Lejeune Père & Fils, propriétaires-récoltants à Villers-Marmery depuis 1684 : le domaine en carte dessinée.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a class="evitement" href="#legende">Aller à la légende</a>
+
+<header class="entete">
+  <button class="titre" type="button" data-action="accueil" aria-label="Lejeune, carnet du domaine : revenir à la vue d'ensemble">
+    <span class="titre-nom">Lejeune</span><span class="titre-sous">, carnet du domaine</span>
+  </button>
+</header>
+
+<!-- Mobile : l'itinéraire, de la forêt jusqu'à la cave -->
+<main class="itineraire" id="itineraire" aria-label="Itinéraire dans le domaine"></main>
+
+<!-- La carte (bureau : tout l'écran ; mobile : « Voir toute la carte ») -->
+<section class="visionneuse" id="visionneuse" aria-label="Carte dessinée du domaine" aria-describedby="aide-carte" tabindex="0">
+  <p class="aide" id="aide-carte">Faites glisser la carte pour vous déplacer, molette ou pincement pour zoomer, touches plus et moins au clavier. Chaque lieu numéroté ouvre une page du carnet ; la légende en donne la liste.</p>
+  <div class="carte" id="carte">
+    <img class="carte-trait" id="carte-trait" alt="" draggable="false" decoding="async" loading="lazy"
+      src="carte-trait-1600.webp"
+      srcset="carte-trait-1600.webp 1600w, carte-trait.webp 3200w"
+      sizes="(max-width: 900px) 500px, 2400px">
+    <div class="lavis" id="lavis" aria-hidden="true"></div>
+    <div class="brume" aria-hidden="true"><span></span><span></span></div>
+    <div class="reperes" id="reperes"></div>
+  </div>
+  <button class="carte-retour" type="button" data-action="fermer-carte">
+    <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4 6.5 10l6 6"/></svg>
+    Revenir à l'itinéraire
+  </button>
+</section>
+
+<nav class="cartouche" id="legende" aria-label="Légende de la carte" tabindex="-1">
+  <div class="cartouche-cadre">
+    <p class="cartouche-titre">Légende</p>
+    <ol class="cartouche-liste" id="cartouche-liste"></ol>
+    <div class="cartouche-pied">
+      <button class="bouton bouton-pinot" type="button" data-go="venir">Venir au domaine</button>
+      <div class="langues" role="group" aria-label="Langue du site">
+        <button type="button" data-lang="fr" aria-pressed="true">FR</button>
+        <span aria-hidden="true">/</span>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+    <p class="evin">L'abus d'alcool est dangereux pour la santé. À consommer avec modération.</p>
+  </div>
+</nav>
+
+<div class="zoom" role="group" aria-label="Zoom de la carte">
+  <button type="button" data-zoom="in" aria-label="Zoomer"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4.5v11M4.5 10h11"/></svg></button>
+  <button type="button" data-zoom="out" aria-label="Dézoomer"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10h11"/></svg></button>
+  <button type="button" data-zoom="reset" aria-label="Revenir à la vue d'ensemble"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="5.5"/><path d="M10 1.5v4M10 14.5v4M1.5 10h4M14.5 10h4"/></svg></button>
+</div>
+
+<aside class="carnet" id="carnet" aria-label="Page du carnet" hidden>
+  <div class="carnet-feuille">
+    <button class="carnet-fermer" type="button" data-action="fermer" aria-label="Refermer la page">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15"/></svg>
+    </button>
+    <div class="carnet-page" id="carnet-page"></div>
+  </div>
+</aside>
+
+<div class="fenetre" id="fenetre" role="dialog" aria-modal="true" aria-labelledby="fenetre-titre" hidden>
+  <figure class="fenetre-cadre">
+    <img src="../shared/photos/paysage-fenetre-vue-vignes.jpg" alt="Par la fenêtre aux volets ouverts, les rangs de vigne descendent vers la plaine ; un chemin blanc les traverse." decoding="async" loading="lazy">
+    <figcaption id="fenetre-titre">La vue que la famille a chaque matin, depuis une fenêtre de la maison.</figcaption>
+  </figure>
+  <button class="fenetre-fermer" type="button" data-action="fermer-fenetre" aria-label="Refermer la fenêtre">
+    <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15"/></svg>
+  </button>
+</div>
+
+<div class="barre-mobile" role="group" aria-label="Raccourcis">
+  <button type="button" class="barre-legende" data-action="tiroir" aria-expanded="false" aria-controls="legende">
+    <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 6h12M4 10h12M4 14h8"/></svg>Légende
+  </button>
+  <button type="button" data-action="ouvrir-carte">
+    <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2.5 5.5 7.5 3.5l5 2 5-2v11l-5 2-5-2-5 2z M7.5 3.5v11 M12.5 5.5v11"/></svg>La carte
+  </button>
+  <button type="button" class="barre-venir" data-go="venir">Venir</button>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/declinaison.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lejeune · cinq concepts</title>
+<meta name="description" content="Cinq concepts de site pour Champagne Lejeune Père & Fils, et leurs déclinaisons.">
+<style>
+  :root {
+    --bg: #141517; --bar: #1c1d20; --raised: #25272b; --line: #33353a; --text: #ecebe6; --muted: #a3a29b;
+    --accent: #e3c68e; --ink: #141517;
+    --ui: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    --ease: cubic-bezier(.22, 1, .36, 1);
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body { background: var(--bg); color: var(--text); font: 14px/1.35 var(--ui); display: flex; flex-direction: column; overflow: hidden; }
+  ::selection { background: var(--accent); color: var(--ink); }
+  button, select, a { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .bar { display: flex; align-items: center; gap: 14px; height: 56px; padding: 0 12px 0 16px; background: var(--bar); border-bottom: 1px solid var(--line); }
+  .brand { display: flex; flex-direction: column; line-height: 1.15; white-space: nowrap; padding-right: 4px; }
+  .brand b { font-weight: 650; letter-spacing: .01em; }
+  .brand span { color: var(--muted); font-size: 12px; }
+
+  .tabs { display: flex; gap: 2px; flex: 1; min-width: 0; height: 100%; justify-content: center; }
+  .tab {
+    position: relative; flex: 0 1 auto; min-width: 0; display: flex; align-items: center; gap: 9px; padding: 0 12px;
+    background: none; border: 0; cursor: pointer; text-align: left; color: var(--muted);
+    transition: color .2s, background-color .2s;
+  }
+  .tab:hover { color: var(--text); background: rgba(255, 255, 255, .03); }
+  .tab::after { content: ''; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease); }
+  .tab[aria-selected="true"] { color: var(--text); }
+  .tab[aria-selected="true"]::after { transform: scaleX(1); }
+  .tab-n { flex: none; display: grid; place-items: center; width: 22px; height: 22px; border: 1px solid var(--line); border-radius: 50%; font-size: 12px; font-variant-numeric: tabular-nums; }
+  .tab[aria-selected="true"] .tab-n { background: var(--accent); border-color: var(--accent); color: var(--ink); font-weight: 600; }
+  .tab-t { min-width: 0; display: flex; flex-direction: column; }
+  .tab-t b { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tab-t span { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .tools { display: flex; align-items: center; gap: 8px; flex: none; }
+  .seg { display: flex; padding: 2px; gap: 2px; background: var(--raised); border: 1px solid var(--line); border-radius: 9px; }
+  .seg button {
+    position: relative; border: 0; background: none; padding: 6px 11px; border-radius: 7px; cursor: pointer; color: var(--muted);
+    font-size: 13px; white-space: nowrap; transition: color .2s, background-color .2s;
+  }
+  .seg button:hover:not([aria-disabled="true"]) { color: var(--text); }
+  .seg button[aria-pressed="true"] { background: var(--text); color: var(--ink); font-weight: 600; }
+  .seg button[aria-disabled="true"] { opacity: .38; cursor: not-allowed; }
+  .seg-label { color: var(--muted); font-size: 12px; margin-right: -2px; }
+  .seg svg { display: block; width: 16px; height: 16px; }
+  .seg.icons button { padding: 6px 8px; }
+
+  .link { display: inline-flex; align-items: center; gap: 6px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 9px; text-decoration: none; color: var(--muted); font-size: 13px; white-space: nowrap; transition: color .2s, border-color .2s; }
+  .link:hover { color: var(--text); border-color: #4a4d53; }
+  .link svg { width: 14px; height: 14px; }
+  .link[hidden] { display: none; }
+
+  .decl-select { display: none; background: var(--raised); border: 1px solid var(--line); border-radius: 9px; padding: 6px 8px; color: var(--text); }
+
+  .tip {
+    position: fixed; z-index: 10; max-width: 260px; padding: 8px 10px; border-radius: 8px; background: var(--text); color: var(--ink);
+    font-size: 12.5px; line-height: 1.4; pointer-events: none; opacity: 0; transform: translateY(-4px); transition: opacity .15s, transform .2s var(--ease);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+  }
+  .tip.is-on { opacity: 1; transform: none; }
+
+  .stage { flex: 1; min-height: 0; display: flex; justify-content: center; align-items: center; background: var(--bg); }
+  .stage iframe { display: block; border: 0; width: 100%; height: 100%; background: #fff; transition: width .45s var(--ease), height .45s var(--ease), border-radius .45s var(--ease); }
+  .stage.is-mobile iframe { width: 390px; height: min(844px, calc(100% - 40px)); border-radius: 28px; box-shadow: 0 0 0 9px #050506, 0 0 0 10px #3a3c41, 0 30px 60px rgba(0, 0, 0, .55); }
+
+  @media (max-width: 1500px) { .seg-label, .brand span { display: none; } }
+  @media (max-width: 1280px) { .tab-t span { display: none; } .tab:not([aria-selected="true"]) .tab-t { display: none; } }
+  @media (max-width: 1080px) { .brand span, .seg-label, .link .txt { display: none; } .link { padding: 7px 8px; } }
+  @media (max-width: 860px) {
+    .bar { gap: 8px; padding: 0 8px; height: 52px; }
+    .brand { display: none; }
+    .tab { flex: 0 0 auto; padding: 0 6px; }
+    .tab-t { display: none; }
+    .tab-n { width: 30px; height: 30px; font-size: 13px; }
+    .tabs { gap: 0; }
+    .seg.decl, .seg.icons, .link.pop { display: none; }
+    .decl-select { display: block; }
+    .stage.is-mobile iframe { width: 100%; height: 100%; border-radius: 0; box-shadow: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="brand"><b>Lejeune</b><span>Cinq concepts de site</span></div>
+
+  <nav class="tabs" role="tablist" aria-label="Concepts" id="tabs"></nav>
+
+  <div class="tools">
+    <span class="seg-label" id="decl-label">Déclinaison</span>
+    <div class="seg decl" role="group" aria-labelledby="decl-label" id="decl"></div>
+    <select class="decl-select" id="decl-select" aria-label="Déclinaison"></select>
+    <div class="seg icons" role="group" aria-label="Taille d'écran">
+      <button type="button" data-size="desktop" aria-pressed="true" title="Bureau (M)">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="1.5" y="2.5" width="13" height="8.5" rx="1"/><path d="M5.5 14h5M8 11v3"/></svg>
+        <span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Bureau</span>
+      </button>
+      <button type="button" data-size="mobile" aria-pressed="false" title="Mobile, 390 px (M)">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="4.5" y="1.5" width="7" height="13" rx="1.4"/><path d="M7 12.5h2"/></svg>
+        <span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Mobile</span>
+      </button>
+    </div>
+    <a class="link pop" id="pop-link" href="pop/" target="_blank" rel="noopener" hidden>
+      <span class="txt">Formats Pop</span>
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M5 2.5h6.5V9M11.5 2.5 3 11"/></svg>
+    </a>
+    <a class="link" id="open" href="#" target="_blank" rel="noopener" title="Ouvrir ce concept seul, dans un nouvel onglet">
+      <span class="txt">Ouvrir seul</span>
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M5 2.5h6.5V9M11.5 2.5 3 11"/></svg>
+    </a>
+  </div>
+</header>
+
+<main class="stage" id="stage">
+  <iframe id="frame" title="Concept" src="about:blank"></iframe>
+</main>
+
+<div class="tip" id="tip" role="tooltip"></div>
+
+<script>
+  'use strict';
+  const CONCEPTS = [
+    { dir: '1-plan-sequence', name: 'Plan-séquence', verb: 'on regarde',
+      decl: { illustration: true, pop: 'La Pop va avec le 4 et le 5.' } },
+    { dir: '2-vue-cavaliere', name: 'Vue cavalière', verb: 'on explore',
+      decl: { illustration: 'Ici, l’illustration est déjà le cœur du concept.', pop: 'La Pop va avec le 4 et le 5.' } },
+    { dir: '3-maison-de-famille', name: 'Maison de famille', verb: 'on fait connaissance',
+      decl: { illustration: true, pop: 'La Pop va avec le 4 et le 5.' } },
+    { dir: '4-nuancier', name: 'Nuancier', verb: 'on compare',
+      decl: { illustration: true, pop: true } },
+    { dir: '5-trois-portes', name: 'Trois Portes', verb: 'on choisit',
+      decl: { illustration: true, pop: true } }
+  ];
+  const DECLS = [['base', 'Base'], ['illustration', 'Illustration'], ['pop', 'Pop']];
+  const KEY = 'lejeune-concepts';
+
+  const $ = (id) => document.getElementById(id);
+  const frame = $('frame'), stage = $('stage'), tip = $('tip');
+  const state = { c: 0, d: 'base', size: 'desktop' };
+
+  const available = (c, d) => d === 'base' || CONCEPTS[c].decl[d] === true;
+  const why = (c, d) => (typeof CONCEPTS[c].decl[d] === 'string' ? CONCEPTS[c].decl[d] : '');
+
+  $('tabs').innerHTML = CONCEPTS.map((c, i) => `
+    <button class="tab" role="tab" data-c="${i}" title="${c.name} · ${c.verb} (${i + 1})">
+      <span class="tab-n">${i + 1}</span>
+      <span class="tab-t"><b>${c.name}</b><span>${c.verb}</span></span>
+    </button>`).join('');
+  $('decl').innerHTML = DECLS.map(([v, l]) => `<button type="button" data-d="${v}">${l}</button>`).join('');
+
+  function url(withDecl = true) {
+    const c = CONCEPTS[state.c];
+    return `${c.dir}/` + (withDecl && state.d !== 'base' ? `?d=${state.d}` : '');
+  }
+
+  function save() {
+    history.replaceState(null, '', `#${state.c + 1}${state.d !== 'base' ? '/' + state.d : ''}`);
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* stockage indisponible */ }
+  }
+
+  function renderBar() {
+    document.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', String(+t.dataset.c === state.c)));
+    document.querySelectorAll('#decl button').forEach((b) => {
+      const ok = available(state.c, b.dataset.d);
+      b.setAttribute('aria-pressed', String(b.dataset.d === state.d));
+      b.setAttribute('aria-disabled', String(!ok));
+      b.dataset.why = ok ? '' : why(state.c, b.dataset.d);
+    });
+    $('decl-select').innerHTML = DECLS.filter(([v]) => available(state.c, v))
+      .map(([v, l]) => `<option value="${v}"${v === state.d ? ' selected' : ''}>${l}</option>`).join('');
+    document.querySelectorAll('[data-size]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.size === state.size)));
+    stage.classList.toggle('is-mobile', state.size === 'mobile');
+    $('open').href = url();
+    $('pop-link').hidden = state.d !== 'pop';
+    document.title = `${state.c + 1}. ${CONCEPTS[state.c].name} · Lejeune`;
+  }
+
+  function showConcept(c) {
+    state.c = c;
+    if (!available(c, state.d)) state.d = 'base';
+    frame.src = url();
+    frame.title = CONCEPTS[c].name;
+    renderBar(); save();
+  }
+
+  function setDecl(d) {
+    if (!available(state.c, d) || d === state.d) return;
+    state.d = d;
+    frame.contentWindow && frame.contentWindow.postMessage({ type: 'lejeune:declinaison', value: d }, '*');
+    renderBar(); save();
+  }
+
+  function setSize(s) { state.size = s; renderBar(); save(); }
+
+  document.querySelectorAll('.tab').forEach((t) => t.addEventListener('click', () => {
+    if (+t.dataset.c !== state.c) showConcept(+t.dataset.c);
+  }));
+  document.querySelectorAll('#decl button').forEach((b) => {
+    b.addEventListener('click', () => setDecl(b.dataset.d));
+    const show = () => {
+      if (!b.dataset.why) return;
+      tip.textContent = b.dataset.why;
+      const r = b.getBoundingClientRect();
+      tip.style.left = Math.min(innerWidth - 270, r.left) + 'px';
+      tip.style.top = r.bottom + 8 + 'px';
+      tip.classList.add('is-on');
+    };
+    const hide = () => tip.classList.remove('is-on');
+    b.addEventListener('mouseenter', show); b.addEventListener('focus', show);
+    b.addEventListener('mouseleave', hide); b.addEventListener('blur', hide);
+  });
+  $('decl-select').addEventListener('change', (e) => setDecl(e.target.value));
+  document.querySelectorAll('[data-size]').forEach((b) => b.addEventListener('click', () => setSize(b.dataset.size)));
+
+  // Arrivée d'une page : on lui redonne la déclinaison courante (rechargement interne, lien suivi).
+  addEventListener('message', (e) => {
+    if (e.source !== frame.contentWindow || !e.data || e.data.type !== 'lejeune:etat') return;
+    frame.contentWindow.postMessage({ type: 'lejeune:declinaison', value: state.d }, '*');
+  });
+
+  addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey || e.target.closest('input, textarea, select')) return;
+    const n = Number(e.key);
+    if (n >= 1 && n <= CONCEPTS.length) showConcept(n - 1);
+    else if (e.key === 'd' || e.key === 'D') {
+      const list = DECLS.map(([v]) => v).filter((v) => available(state.c, v));
+      setDecl(list[(list.indexOf(state.d) + 1) % list.length]);
+    } else if (e.key === 'm' || e.key === 'M') setSize(state.size === 'mobile' ? 'desktop' : 'mobile');
+  });
+
+  // Départ : l'adresse (#4/pop) d'abord, puis la dernière visite.
+  (() => {
+    let saved = {};
+    try { saved = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { /* rien */ }
+    const m = location.hash.match(/^#(\d)(?:\/(\w+))?/);
+    const c = m ? Math.min(CONCEPTS.length, Math.max(1, +m[1])) - 1 : (saved.c || 0);
+    state.d = m ? (m[2] || 'base') : (saved.d || 'base');
+    state.size = saved.size === 'mobile' ? 'mobile' : 'desktop';
+    showConcept(c);
+  })();
+</script>
+</body>
+</html>
