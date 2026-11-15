@@ -11,6 +11,9 @@ Les dérivés (trait seul, teintes, détourages, inversion) sortent de `concepts
 |---|---|---|---|---|
 | `carte-domaine.jpg` (3200px), `-1600.jpg` | Plan cavalier du domaine : maison, cour, routes, vignes en rangs, forêt en haut | `maison-vue-aerienne-domaine-vignes` | flux-kontext-max, puis Real-ESRGAN ×4 | 2 |
 | `carte-domaine-trait.png`, `-1600.png` | Le même dessin, trait sépia seul sur fond transparent (calque « encre », aligné au pixel) | dérivé de `carte-domaine.jpg` | `derives.py trait` | 2 |
+| `carte-a-domaine.jpg` (3200px), `-1600.jpg` | **Version A** de la nouvelle carte (retours client du 14/11) : vue plongeante fidèle, maison, cour vide, routes, kiosque, parcelles avec leurs vrais sens de rangs, bois en haut | `maison-vue-aerienne-domaine-vignes` | nano-banana-pro, 2 passes (dessin, puis voitures retirées et lavis adouci) | 2 |
+| `carte-b-facade.jpg` (3200px), `-1600.jpg` | **Version B** de la nouvelle carte : la maison de face, cour et mur courbe, vignes et plaine jusqu'à l'horizon, ciel en papier nu | `maison-vue-aerienne-facade` | idem | 2 |
+| `carte-a-domaine-trait.png`, `carte-b-facade-trait.png` (+ `-1600`) | Calques « encre » des versions A et B, alignés au pixel | dérivés | `derives.py trait` | 2 |
 | `cave-coupe.jpg` | La maison et sa cave en craie en coupe, bouteilles sur lattes | texte seul | flux-1.1-pro | 2 |
 | `pressoir.png` | Le vieux pressoir vu de dessus, mains sur la barre (transparent) | `pressoir-ancien-mains-vue-dessus` | flux-kontext-max | 2, 3 |
 | `facade.png` | La façade de la maison, encre ardoise et lavis bleu-gris (transparent) | `maison-vue-aerienne-facade` | flux-kontext-max | 3, 4 |

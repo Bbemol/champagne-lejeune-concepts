@@ -13,17 +13,84 @@
 
   /* ---------- La carte : dimensions et lieux (en fraction de la carte) ---------- */
   const MAP_W = 2400;
-  const MAP_H = Math.round(MAP_W * 2378 / 3200);
+  let MAP_H = Math.round(MAP_W * 2389 / 3200);
 
   const LIEUX = [
-    { id: 'maison', n: 1, nom: 'La maison', sous: 'depuis 1684', x: .47, y: .335, r: .1, forme: 1, cote: 'gauche', vue: { x: .558, f: 1.3 } },
-    { id: 'pressoir', n: 2, nom: 'Le pressoir', sous: '1927', note: 'emplacement indicatif, à confirmer', x: .44, y: .45, r: .07, forme: 2, cote: 'gauche' },
-    { id: 'cave', n: 3, nom: 'La cave', sous: 'les cuvées', note: 'emplacement indicatif, à confirmer', x: .585, y: .415, r: .08, forme: 3, cote: 'droite' },
-    { id: 'parcelles', n: 4, nom: 'Les parcelles', sous: 'Chardonnay, Pinot Noir', x: .245, y: .7, r: .165, forme: 2, cote: 'droite',
-      autres: [{ x: .79, y: .6, r: .16, forme: 1 }, { x: .62, y: .16, r: .12, forme: 3 }] },
-    { id: 'venir', n: 5, nom: 'vous êtes attendus', legende: 'Venir au domaine', sous: '67, avenue de Champagne', x: .368, y: .53, r: .06, forme: 3, cote: 'gauche', attendus: true },
-    { id: 'kiosque', n: 0, nom: 'Le kiosque aux nouvelles', legende: 'Le kiosque', sous: 'les nouvelles', note: 'un repère de lecture, pas un lieu du domaine', x: .15, y: .29, r: .06, forme: 1, cote: 'droite' }
+    { id: 'maison', n: 1, nom: 'La maison', sous: 'depuis 1684' },
+    { id: 'pressoir', n: 2, nom: 'Le pressoir', sous: '1927', note: 'emplacement indicatif, à confirmer' },
+    { id: 'cave', n: 3, nom: 'La cave', sous: 'les cuvées', note: 'emplacement indicatif, à confirmer' },
+    { id: 'parcelles', n: 4, nom: 'Les parcelles', sous: 'Chardonnay, Pinot Noir' },
+    { id: 'venir', n: 5, nom: 'vous êtes attendus', legende: 'Venir au domaine', sous: '67, avenue de Champagne', attendus: true },
+    { id: 'kiosque', n: 0, nom: 'Le kiosque aux nouvelles', legende: 'Le kiosque', sous: 'les nouvelles', note: 'un repère de lecture, pas un lieu du domaine' }
   ];
+
+  /* Deux illustrations de la carte, chacune dessinée d'après une photo aérienne ; on passe de l'une à l'autre
+     dans le bandeau de réglages. Tout ce qui est posé sur la carte (lieux, flèches, affichettes, fenêtre, taches
+     du décor, vignettes mobiles) est placé d'après chaque dessin, en fraction de sa largeur et de sa hauteur.
+     Verzy et Ambonnay : directions indiquées par le client sur les photos « -avec-indications ». */
+  const CARTES = {
+    a: {
+      label: 'A. Domaine et vignes',
+      couleur: 'carte-a-domaine', trait: 'carte-a-trait', h: 2389,
+      alt: 'Plan dessiné du domaine Lejeune vu d\'en haut : la maison au long toit de tuiles et sa cuverie au toit plat, la cour fermée par un mur courbe et un portail, la route à gauche, le kiosque dans le jardin, les parcelles de vigne tout autour et une ligne de bois à l\'horizon.',
+      accueil: { x: .5, y: .5 }, accueilMobile: { x: .45, y: .55 },
+      lieux: {
+        maison: { x: .44, y: .565, r: .1, forme: 1, cote: 'gauche', vue: { x: .47, f: 1.3 } },
+        pressoir: { x: .36, y: .46, r: .07, forme: 2, cote: 'droite' },
+        cave: { x: .595, y: .665, r: .07, forme: 3, cote: 'droite' },
+        parcelles: { x: .8, y: .45, r: .17, forme: 2, cote: 'droite', autres: [{ x: .82, y: .85, r: .16, forme: 1 }, { x: .12, y: .68, r: .13, forme: 3 }] },
+        venir: { x: .43, y: .875, r: .06, forme: 3, cote: 'droite' },
+        kiosque: { x: .115, y: .385, r: .07, forme: 1, cote: 'droite' }
+      },
+      fenetre: { x: .585, y: .565 },
+      vers: [
+        { nom: 'vers Ambonnay', x: .5, y: .125, fleche: 'haut' },
+        { nom: 'vers Verzy', x: .37, y: .95, fleche: 'bas' }
+      ],
+      affichettes: { medaille: { x: .7, y: .74 }, recrutement: { x: .19, y: .6 }, 'rene-louis': { x: .3, y: .21 } },
+      decor: [{ x: .55, y: .07, r: .16, forme: 2 }, { x: .85, y: .08, r: .12, forme: 3 }, { x: .24, y: .1, r: .15, forme: 1 }],
+      etapeHaut: { x: .6, y: .1 }
+    },
+    b: {
+      label: 'B. Façade',
+      couleur: 'carte-b-facade', trait: 'carte-b-trait', h: 2389,
+      alt: 'Dessin du domaine Lejeune vu de face et d\'en haut : la maison aux deux lucarnes et ses portes cochères, l\'aile à pignon aux volets bruns, la cour fermée par un long mur courbe et un portail, la route qui la contourne, des rangs de vigne au premier plan et la plaine jusqu\'à l\'horizon.',
+      accueil: { x: .5, y: .55 }, accueilMobile: { x: .5, y: .6 },
+      lieux: {
+        maison: { x: .5, y: .475, r: .1, forme: 1, cote: 'gauche', vue: { x: .58, f: 1 } },
+        pressoir: { x: .48, y: .6, r: .07, forme: 2, cote: 'droite' },
+        cave: { x: .705, y: .745, r: .07, forme: 3, cote: 'droite' },
+        parcelles: { x: .22, y: .5, r: .15, forme: 2, cote: 'droite', autres: [{ x: .75, y: .95, r: .13, forme: 1 }, { x: .87, y: .45, r: .1, forme: 3 }] },
+        venir: { x: .14, y: .82, r: .06, forme: 3, cote: 'droite' },
+        kiosque: { x: .3, y: .37, r: .07, forme: 1, cote: 'droite' }
+      },
+      fenetre: { x: .395, y: .575, cote: 'bas' },
+      vers: [
+        { nom: 'vers Ambonnay', x: .79, y: .37, fleche: 'haut' },
+        { nom: 'vers Verzy', x: .035, y: .79, fleche: 'gauche' }
+      ],
+      affichettes: { medaille: { x: .41, y: .83 }, recrutement: { x: .12, y: .43 }, 'rene-louis': { x: .62, y: .86 } },
+      decor: [{ x: .3, y: .35, r: .17, forme: 2 }, { x: .68, y: .33, r: .15, forme: 3 }, { x: .93, y: .4, r: .09, forme: 1 }],
+      etapeHaut: { x: .4, y: .36 }
+    }
+  };
+  let carteId = 'a';
+  // Au démarrage, le réglage fixe seulement la carte ; ensuite, chaque choix redessine la carte en direct.
+  if (window.REGLAGES) {
+    REGLAGES.option({
+      id: 'carte', titre: 'Illustration de la carte', defaut: 'a',
+      choix: Object.keys(CARTES).map((v) => ({ v, label: CARTES[v].label })),
+      appliquer: (v, auDemarrage) => { if (auDemarrage) carteId = v; else changerCarte(v); }
+    });
+  }
+  const carteCourante = () => CARTES[carteId];
+  // Copie les positions de la carte choisie sur les lieux.
+  function poserLieux() {
+    const c = carteCourante();
+    MAP_H = Math.round(MAP_W * c.h / 3200);
+    LIEUX.forEach((l) => { delete l.vue; delete l.autres; Object.assign(l, c.lieux[l.id]); });
+  }
+  poserLieux();
   const lieu = (id) => LIEUX.find((l) => l.id === id);
   const ORDRE = ['maison', 'pressoir', 'cave', 'parcelles', 'venir', 'kiosque'];
 
@@ -46,17 +113,24 @@
   const page = $('#carnet-page');
   const trait = $('#carte-trait');
 
-  carte.style.width = MAP_W + 'px';
-  carte.style.height = MAP_H + 'px';
-  trait.alt = 'Plan dessiné du domaine Lejeune vu d\'en haut et de biais : la maison et sa cour au centre, la petite annexe à gauche, les routes, les rangs de vigne tout autour, la forêt de la Montagne de Reims en haut.';
+  function dessinCarte() {
+    const c = carteCourante();
+    carte.style.width = MAP_W + 'px';
+    carte.style.height = MAP_H + 'px';
+    trait.alt = c.alt;
+    trait.srcset = `${c.trait}-1600.webp 1600w, ${c.trait}.webp 3200w`;
+    trait.src = `${c.trait}-1600.webp`;
+  }
 
   // Le calque couleur suit la définition du calque trait (1600 sur mobile, 3200 sur bureau).
   function calquesSources() {
+    const c = carteCourante();
     const grand = !estMobile() && (trait.currentSrc || '').indexOf('1600') === -1;
-    carte.style.setProperty('--trait', `url(${grand ? 'carte-trait.webp' : 'carte-trait-1600.webp'})`);
-    carte.style.setProperty('--couleur', `url(${ILL}${grand ? 'carte-domaine.jpg' : 'carte-domaine-1600.jpg'})`);
+    carte.style.setProperty('--trait', `url(${c.trait}${grand ? '' : '-1600'}.webp)`);
+    carte.style.setProperty('--couleur', `url(${ILL}${c.couleur}${grand ? '' : '-1600'}.jpg)`);
   }
   trait.addEventListener('load', calquesSources);
+  dessinCarte();
   calquesSources();
 
   /* ---------- Repères, affichettes, étiquettes ---------- */
@@ -70,27 +144,35 @@
   }
 
   const AFFICHETTES = [
-    { news: 'medaille', x: .615, y: .56, rot: '3deg', titre: "Médaille d'Or pour la Grande Réserve", tag: 'Paris, mars 2026', mot: "Médaille d'Or" },
-    { news: 'recrutement', x: .355, y: .84, rot: '-4deg', titre: 'Vendangeurs, nous recrutons', tag: 'pour les vendanges 2026', mot: 'Vendangeurs' }
+    { news: 'medaille', rot: '3deg', titre: "Médaille d'Or pour la Grande Réserve", tag: 'Paris, mars 2026', mot: "Médaille d'Or" },
+    { news: 'recrutement', rot: '-4deg', titre: 'Vendangeurs, nous recrutons', tag: 'pour les vendanges 2026', mot: 'Vendangeurs' }
   ];
-  if (L.enSaison()) AFFICHETTES.push({ news: 'rene-louis', x: .72, y: .29, rot: '-2deg', titre: 'La René Louis est de retour', tag: "d'octobre à décembre", mot: 'René Louis' });
+  if (L.enSaison()) AFFICHETTES.push({ news: 'rene-louis', rot: '-2deg', titre: 'La René Louis est de retour', tag: "d'octobre à décembre", mot: 'René Louis' });
 
-  $('#reperes').innerHTML = [
-    `<span class="etiquette etiquette-grande" style="left:33%;top:15.5%">forêt de la Montagne de Reims</span>`,
-    `<span class="etiquette" style="left:70%;top:79%;transform:translate(-50%,-50%) rotate(41deg) scale(var(--inv))">avenue de Champagne</span>`,
-    `<button class="vers" type="button" data-go="parcelles" style="left:95%;top:15%">
-       <span><span class="vers-nom">vers Verzy</span><small>Grand Cru</small><small class="vers-note">direction à vérifier</small></span>
-       <svg viewBox="0 0 46 46" aria-hidden="true"><path d="M8 38C16 30 22 20 36 10M24 9.5l12.5.5-1 12"/></svg></button>`,
-    `<button class="vers" type="button" data-go="parcelles" style="left:95%;top:86%">
-       <span><span class="vers-nom">vers Ambonnay</span><small>Grand Cru</small><small class="vers-note">direction à vérifier</small></span>
-       <svg viewBox="0 0 46 46" aria-hidden="true"><path d="M8 8c8 8 14 18 28 28M35.5 24l1 12.5-12.5.5"/></svg></button>`,
-    ...AFFICHETTES.map((a) => `<button class="affichette" type="button" data-go="kiosque/${a.news}" style="left:${a.x * 100}%;top:${a.y * 100}%;--rot:${a.rot}">
-       <span class="affichette-titre">${esc(a.titre)}</span><span class="affichette-tag">${esc(a.tag)}</span><span class="affichette-mot" aria-hidden="true">${esc(a.mot)}</span></button>`),
-    ...LIEUX.map(htmlRepere),
-    `<button class="repere repere-fenetre" type="button" data-go="maison/fenetre" data-cote="gauche" style="left:64.6%;top:33%" hidden aria-label="Regarder par la fenêtre de la maison">
-       <span class="repere-n">${FENETRE}</span><span class="repere-t"><span class="repere-nom">la fenêtre</span></span></button>`
-  ].join('');
-  $$('.repere-fenetre svg').forEach((s) => { s.style.cssText = 'width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.4'; });
+  // Flèches de direction, dessinées dans le sens indiqué par le client sur chaque photo.
+  const FLECHES = {
+    haut: 'M23 40C20 30 26 20 23 7M15 14l8-8 8 8',
+    bas: 'M12 6c4 12 10 22 22 32M34 25.5l.5 13-13 .5',
+    gauche: 'M40 12C30 22 20 30 7 36M8 23.5 6.5 36.5l13 1.5'
+  };
+  const pc = (v) => (v * 100).toFixed(2) + '%';
+
+  function rendreReperes() {
+    const c = carteCourante();
+    $('#reperes').innerHTML = [
+      ...c.vers.map((v) => `<button class="vers" type="button" data-go="parcelles" data-fleche="${v.fleche}" style="left:${pc(v.x)};top:${pc(v.y)}">
+         <span><span class="vers-nom">${esc(v.nom)}</span><small>Grand Cru</small></span>
+         <svg viewBox="0 0 46 46" aria-hidden="true"><path d="${FLECHES[v.fleche]}"/></svg></button>`),
+      ...AFFICHETTES.map((a) => { const p = c.affichettes[a.news]; return `<button class="affichette" type="button" data-go="kiosque/${a.news}" style="left:${pc(p.x)};top:${pc(p.y)};--rot:${a.rot}">
+         <span class="affichette-titre">${esc(a.titre)}</span><span class="affichette-tag">${esc(a.tag)}</span><span class="affichette-mot" aria-hidden="true">${esc(a.mot)}</span></button>`; }),
+      ...LIEUX.map(htmlRepere),
+      `<button class="repere repere-fenetre" type="button" data-go="maison/fenetre" data-cote="${c.fenetre.cote || 'gauche'}" style="left:${pc(c.fenetre.x)};top:${pc(c.fenetre.y)}" hidden aria-label="Regarder par la fenêtre de la maison">
+         <span class="repere-n">${FENETRE}</span><span class="repere-t"><span class="repere-nom">la fenêtre</span></span></button>`
+    ].join('');
+    $$('.repere-fenetre svg').forEach((s) => { s.style.cssText = 'width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.4'; });
+    $$('#reperes .repere-n svg').forEach((s) => { if (!s.style.cssText) s.style.cssText = 'width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.5'; });
+  }
+  rendreReperes();
 
   /* ---------- Légende ---------- */
   $('#cartouche-liste').innerHTML = ORDRE.map((id) => {
@@ -147,9 +229,8 @@
   vus.forEach((id) => colorier(id, false));
   renduVus();
 
-  // La forêt n'est pas une rubrique : elle prend sa couleur dès l'arrivée, et montre le geste de la carte.
-  const FORET = [{ x: .24, y: .13, r: .21, forme: 2 }, { x: .58, y: .07, r: .15, forme: 3 }, { x: .82, y: .05, r: .1, forme: 1 }];
-  function foret(anime) { FORET.forEach((t, i) => setTimeout(() => tache('foret' + i, t, anime), anime ? 420 * i : 0)); }
+  // Le lointain (bois, plaine) n'est pas une rubrique : il prend sa couleur dès l'arrivée, et montre le geste de la carte.
+  function foret(anime) { carteCourante().decor.forEach((t, i) => setTimeout(() => tache('foret' + i, t, anime), anime ? 420 * i : 0)); }
   function chargerCarte() { if (trait.loading === 'lazy') trait.loading = 'eager'; }
   if (!estMobile()) chargerCarte();
 
@@ -203,7 +284,7 @@
   let eviterTimer = 0;
   let eviterTimer2 = 0;
   function eviter() {
-    const fixes = ['.titre', '#legende', '.carte-retour', '.barre-mobile']
+    const fixes = ['.titre', '#legende', '.carte-retour', '.barre-mobile', '.reglages-ouvrir']
       .map((sel) => $(sel)).filter((el) => el && el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden' && getComputedStyle(el).display !== 'none')
       .map((el) => el.getBoundingClientRect());
     if (state.page && !estMobile()) {
@@ -246,7 +327,7 @@
     borner(vue);
     appliquer(vol);
   }
-  function accueil(vol = true) { if (estMobile()) regarder(.385, .5, kAccueil, vol, true); else regarder(.5, .47, kAccueil, vol, true); }
+  function accueil(vol = true) { const p = carteCourante()[estMobile() ? 'accueilMobile' : 'accueil']; regarder(p.x, p.y, kAccueil, vol, true); }
   function zoomer(f, cx, cy) {
     const { w, h } = dims();
     cx = cx == null ? w / 2 : cx; cy = cy == null ? h / 2 : cy;
@@ -599,9 +680,7 @@
 
     const neuf = marquerVu(id);
     if (!estMobile() || body.classList.contains('is-carte')) {
-      const f = l.vue ? l.vue.f : (id === 'parcelles' ? 1.05 : 1.55);
-      const k = Math.max((estMobile() ? kAccueil * 1.4 : kAccueil) * f, kMin);
-      regarder(l.vue ? l.vue.x : l.x, l.y, Math.min(k, kMax), true);
+      regarderLieu(l, true);
       // Le trait se retrace puis l'aquarelle se diffuse, une fois la vue arrivée.
       if (neuf) setTimeout(() => colorier(id, true), reduit.matches ? 0 : (premier ? 700 : 450));
     } else if (neuf) {
@@ -614,6 +693,13 @@
     }, delai);
     if (state.sub === 'fenetre' && id === 'maison') ouvrirFenetre(); else fermerFenetre(true);
     if (changePage && estMobile()) body.classList.remove('is-tiroir');
+  }
+
+  // Cadre la vue sur un lieu ouvert, à droite de la légende et à gauche du carnet.
+  function regarderLieu(l, vol) {
+    const f = l.vue ? l.vue.f : (l.id === 'parcelles' ? 1.05 : 1.55);
+    const k = Math.max((estMobile() ? kAccueil * 1.4 : kAccueil) * f, kMin);
+    regarder(l.vue ? l.vue.x : l.x, l.y, Math.min(k, kMax), vol);
   }
 
   function fermer() {
@@ -738,11 +824,11 @@
     const px = borne((0.5 - x * taille / 100) / (1 - taille / 100) * 100);
     const ratioH = (MAP_H / MAP_W) * taille; // hauteur de l'image en % de la largeur du cadre (cadre carré)
     const py = borne((0.5 - y * ratioH / 100) / (1 - ratioH / 100) * 100);
-    return `background-image:url(${ILL}carte-domaine-1600.jpg);background-size:${taille}% auto;background-position:${px}% ${py}%`;
+    return `background-image:url(${ILL}${carteCourante().couleur}-1600.jpg);background-size:${taille}% auto;background-position:${px}% ${py}%`;
   }
   const chemin = (sens) => `<svg class="chemin" viewBox="0 0 100 110" preserveAspectRatio="none" aria-hidden="true"><path d="${sens ? 'M22 0C22 40 78 46 78 110' : 'M78 0C78 40 22 46 22 110'}"/></svg>`;
   const ETAPES = [
-    { id: 'foret', titre: 'La forêt', texte: 'Au-dessus des vignes, la forêt de la Montagne de Reims. Le chemin descend vers le domaine.', x: .3, y: .12, z: .26, forme: 2 },
+    { id: 'foret', titre: 'La forêt', texte: 'Au-dessus des vignes, la forêt de la Montagne de Reims. Le chemin descend vers le domaine.', haut: true, z: .26, forme: 2 },
     { id: 'parcelles', texte: L.MAISON.textes.vignoble, z: .42 },
     { id: 'kiosque', texte: 'Le kiosque rassemble les nouvelles du domaine : médaille, vendanges, cuvée de saison. C\'est un repère de lecture posé sur la carte, pas un lieu du domaine.', z: .26 },
     { id: 'maison', texte: L.MAISON.textes.histoire, z: .3 },
@@ -760,7 +846,8 @@
       </section>` +
       ETAPES.map((et, i) => {
         const l = lieu(et.id) || {};
-        const x = et.x != null ? et.x : l.x, y = et.y != null ? et.y : l.y;
+        const p = et.haut ? carteCourante().etapeHaut : l;
+        const x = p.x, y = p.y;
         const forme = et.forme || l.forme || 1;
         const titre = et.titre || l.legende || l.nom;
         const num = l.n ? `<span class="leg-n">${l.n}</span>` : (l.id ? `<span class="leg-n">${ICONE_PUNAISE}</span>` : '');
@@ -782,6 +869,28 @@
   carnet.addEventListener('transitionend', (e) => { if (e.target.classList.contains('carnet-feuille')) eviter(); });
   carte.addEventListener('transitionend', (e) => { if (e.target === carte) eviter(); });
   mobileQ.addEventListener('change', () => { body.classList.remove('is-tiroir', 'is-carte'); mesurer(); calquesSources(); });
+
+  /* ---------- Bandeau de réglages : bascule entre les deux illustrations ---------- */
+  function changerCarte(id) {
+    carteId = id;
+    poserLieux();
+    dessinCarte();
+    calquesSources();
+    rendreReperes();
+    taches.clear(); lavis.innerHTML = '';
+    vus.forEach((v) => colorier(v, false));
+    foret(false);
+    renduVus();
+    if (state.page) {
+      $$('.repere[data-go]').forEach((b) => b.classList.toggle('is-actif', b.dataset.go === state.page));
+      $('.repere-fenetre').hidden = state.page !== 'maison';
+    }
+    rendreItineraire();
+    bornes();
+    if (!state.page) accueil(false);
+    else if (!estMobile() || body.classList.contains('is-carte')) regarderLieu(lieu(state.page), false);
+  }
+
   mesurer();
   route();
   const premiereFois = vus.size === 0;
